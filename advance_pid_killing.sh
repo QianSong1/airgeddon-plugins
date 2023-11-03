@@ -26,7 +26,7 @@ plugin_description="Advance pid killing for evil twin attack"
 plugin_author="QianSong1"
 
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
-plugin_enabled=1
+plugin_enabled=0
 
 ###### PLUGIN REQUIREMENTS ######
 
