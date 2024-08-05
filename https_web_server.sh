@@ -229,6 +229,8 @@ function https_web_server_override_et_prerequisites() {
 			if [ "${yesno}" = "y" ]; then
 				enable_ssl_web=1
 				create_ssl_cert
+			else
+				enable_ssl_web=0
 			fi
 
 			prepare_captive_portal_data
