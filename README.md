@@ -4,12 +4,11 @@ airgeddon-plugins
 ## Describe
 `modify_no_to_yes.sh`: Support modifying the 9 options in the Evil Twin Attack menu. Do you want to continue with the interface VIF check? Change the default value from no to yes
 
-
 `https_web_server.sh`: Supports HTTPS type web page forced redirection
 
 `custom_essid.sh`: Support custom fake AP names and channels. When the AP name is hidden, force the request to enter the name in order to continue launching the evil twin attack
 
-`multint.sh`: Support selecting different network cards for DOS and AP, mainly for using network cards that do not support VIF features
+`multint.sh`: Support selecting different network cards for DOS and AP, mainly for using network cards that do not support VIF features. What is VIF ?  [here](https://github.com/v1s1t0r1sh3r3/airgeddon/wiki/FAQ%20&%20Troubleshooting#what-is-vif)
 
 `custom_portals.sh`: Support you to customize portal pages
 
