@@ -37,6 +37,11 @@ plugin_maximum_ag_affected_version=""
 #Set only one element in the array "*" to affect all distros, otherwise add them one by one with the name which airgeddon uses for that distro (examples "BlackArch", "Parrot", "Kali")
 plugin_distros_supported=("*")
 
+###################### USER CONFIG VARS ######################
+# NOTE: init enable_ssl_web value ensure clean up function won't show any wornning
+enable_ssl_web=0
+################## END OF USER CONFIG VARS ###################
+
 ###### CUSTOM FUNCTIONS ######
 
 #Just create here new custom functions if they are needed
