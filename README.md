@@ -1,6 +1,12 @@
 # airgeddon-plugins
 airgeddon-plugins
 
+## Portal screenshot
+
+![image-20250329235409118](img/image-20250329235409118.png) 
+
+
+
 ## Describe
 `modify_no_to_yes.sh`: Support modifying the 9 options in the Evil Twin Attack menu. Do you want to continue with the interface VIF check? Change the default value from no to yes
 
@@ -27,6 +33,8 @@ airgeddon-plugins
 
 # 删除多余的文件 LICENSE 与 README.md 等等
 
+# 删除多余的目录 img 与 .git(如果是git clone) 等等
+
 # 这将是最终目录结构
 root @ wifi-hack: /home/kali/桌面/dev-work-space/my-airgeddon/airgeddon-11.21/plugins-------------------------------------------------------------------------------------------------------------- main (✓)
 ➜ tree ./ -L 2
@@ -49,6 +57,7 @@ root @ wifi-hack: /home/kali/桌面/dev-work-space/my-airgeddon/airgeddon-11.21/
 │   ├── Router_xxx
 │   ├── Tp_link_xxx
 │   ├── Update_xxx
+│   ├── Wonderful_xxx
 │   └── XiaoMi_xxx
 ├── custom_portals.sh
 ├── https_web_server.sh
@@ -57,6 +66,6 @@ root @ wifi-hack: /home/kali/桌面/dev-work-space/my-airgeddon/airgeddon-11.21/
 ├── multint.sh
 └── plugin_template.sh
 
-19 directories, 7 files
+20 directories, 7 files
 ```
 
