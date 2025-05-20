@@ -367,55 +367,8 @@ function https_web_server_override_set_webserver_config() {
 	sleep 2
 }
 
-function https_web_server_override_clean_tmpfiles() {
+function https_web_server_posthook_clean_tmpfiles() {
 
-	debug_print
-
-	rm -rf "${tmpdir}bl.txt" > /dev/null 2>&1
-	rm -rf "${tmpdir}target.txt" > /dev/null 2>&1
-	rm -rf "${tmpdir}handshake"* > /dev/null 2>&1
-	rm -rf "${tmpdir}pmkid"* > /dev/null 2>&1
-	rm -rf "${tmpdir}nws"* > /dev/null 2>&1
-	rm -rf "${tmpdir}clts"* > /dev/null 2>&1
-	rm -rf "${tmpdir}wnws.txt" > /dev/null 2>&1
-	rm -rf "${tmpdir}hctmp"* > /dev/null 2>&1
-	rm -rf "${tmpdir}jtrtmp"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${aircrack_pot_tmp}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${et_processesfile}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${hostapd_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${hostapd_wpe_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${hostapd_wpe_log}" > /dev/null 2>&1
-	rm -rf "${scriptfolder}${hostapd_wpe_default_log}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${dhcpd_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${dnsmasq_file}" >/dev/null 2>&1
-	rm -rf "${tmpdir}${control_et_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${control_enterprise_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}parsed_file" > /dev/null 2>&1
-	rm -rf "${tmpdir}${ettercap_file}"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${bettercap_file}"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${bettercap_config_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${bettercap_hook_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${beef_file}" > /dev/null 2>&1
-	if [ "${beef_found}" -eq 1 ]; then
-		rm -rf "${beef_path}${beef_file}" > /dev/null 2>&1
-	fi
-	rm -rf "${tmpdir}${webserver_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${webdir}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${certsdir}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${enterprisedir}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${asleap_pot_tmp}" > /dev/null 2>&1
-	if [ "${dhcpd_path_changed}" -eq 1 ]; then
-		rm -rf "${dhcp_path}" > /dev/null 2>&1
-	fi
-	rm -rf "${tmpdir}wps"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${wps_attack_script_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${wps_out_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${wep_attack_file}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${wep_key_handler}" > /dev/null 2>&1
-	rm -rf "${tmpdir}${wep_data}"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${wepdir}" > /dev/null 2>&1
-	rm -rf "${tmpdir}dos_pm"* > /dev/null 2>&1
-	rm -rf "${tmpdir}${channelfile}" > /dev/null 2>&1
 	if [ "${enable_ssl_web}" -eq 1 ]; then
 		rm -rf "${tmpdir}ag.server.pem" > /dev/null 2>&1
 	fi
