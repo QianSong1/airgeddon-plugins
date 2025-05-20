@@ -421,23 +421,20 @@ function https_web_server_override_clean_tmpfiles() {
 	fi
 }
 
-function initialize_https_web_server_language_strings() {
+function https_web_server_prehook_hookable_for_languages() {
 
-	debug_print
-
-	arr["ENGLISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["SPANISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["FRENCH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["CATALAN","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["PORTUGUESE","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["RUSSIAN","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["GREEK","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["ITALIAN","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["POLISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["GERMAN","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["TURKISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["ARABIC","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL type website services?\${normal_color}\${visual_choice}"
-	arr["CHINESE","https_web_server_text_1"]="\${yellow_color}你想要启用ssl类型的网站服务吗?\${normal_color}\${visual_choice}"
+	arr["ENGLISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL/TLS on captive portal web server? \${normal_color}\${visual_choice}"
+	arr["SPANISH","https_web_server_text_1"]="\${yellow_color}¿Deseas habilitar el SSL/TLS en el portal cautivo del servidor web? \${normal_color}\${visual_choice}"
+	arr["FRENCH","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Voulez-vous activer SSL / TLS sur le serveur web captive portal? \${normal_color}\${visual_choice}"
+	arr["CATALAN","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Voleu habilitar SSL/TLS al servidor web del portal captiu? \${normal_color}\${visual_choice}"
+	arr["PORTUGUESE","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Deseja ativar o SSL/TLS no captive portal web server? \${normal_color}\${visual_choice}"
+	arr["RUSSIAN","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Вы хотите включить службы веб -сайта SSL/TLS? \${normal_color}\${visual_choice}"
+	arr["GREEK","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Θέλετε να ενεργοποιήσετε τις υπηρεσίες ιστοσελίδων τύπου SSL/TLS; \${normal_color}\${visual_choice}"
+	arr["ITALIAN","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Vuoi abilitare SSL/TLS sul server web portal captive? \${normal_color}\${visual_choice}"
+	arr["POLISH","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Czy chcesz włączyć SSL/TLS na serwerze web portalu w niewoli? \${normal_color}\${visual_choice}"
+	arr["GERMAN","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Möchten Sie SSL/TLS-Typ-Website-Dienste aktivieren? \${normal_color}\${visual_choice}"
+	arr["TURKISH","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}Esir portal web sunucusunda SSL/TLS'yi etkinleştirmek mi istiyorsunuz? \${normal_color}\${visual_choice}"
+	arr["ARABIC","https_web_server_text_1"]="\${pending_of_translation} \${normal_color}\${visual_choice} \${yellow_color}هل تريد تمكين خدمات موقع؟ SSL"
+	arr["CHINESE","https_web_server_text_1"]="\${pending_of_translation} \${yellow_color}您要启用SSL类型网站服务吗？ \${normal_color}\${visual_choice}"
 }
 
-initialize_https_web_server_language_strings
