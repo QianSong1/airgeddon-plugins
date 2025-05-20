@@ -67,7 +67,7 @@ function https_web_server_override_et_prerequisites() {
 	if [ "${dos_pursuit_mode}" -eq 1 ]; then
 		language_strings "${language}" 512 "blue"
 	fi
-	print_hint ${current_menu}
+	print_hint
 	echo
 
 	if [ "${et_mode}" != "et_captive_portal" ]; then
@@ -174,6 +174,18 @@ function https_web_server_override_et_prerequisites() {
 	fi
 
 	if [ -n "${enterprise_mode}" ]; then
+		if ! validate_network_type "enterprise"; then
+			return_to_enterprise_main_menu=1
+			return
+		fi
+	else
+		if ! validate_network_type "personal"; then
+			return_to_et_main_menu=1
+			return
+		fi
+	fi
+
+	if [ -n "${enterprise_mode}" ]; then
 		manage_enterprise_log
 	elif [ "${et_mode}" = "et_sniffing" ]; then
 		manage_ettercap_log
@@ -188,6 +200,7 @@ function https_web_server_override_et_prerequisites() {
 			if [ "${yesno}" = "y" ]; then
 				advanced_captive_portal=1
 			fi
+			
 			ask_yesno "https_web_server_text_1" "no"
 			if [ "${yesno}" = "y" ]; then
 				enable_ssl_web=1
@@ -227,9 +240,24 @@ function https_web_server_override_et_prerequisites() {
 	if [ "${channel}" -gt 14 ]; then
 		echo
 		if [ "${country_code}" = "00" ]; then
-			language_strings "${language}" 706 "blue"
+			language_strings "${language}" 706 "yellow"
+		elif [ "${country_code}" = "99" ]; then
+			language_strings "${language}" 719 "yellow"
 		else
 			language_strings "${language}" 392 "blue"
+		fi
+	fi
+
+	if hash arping-th 2> /dev/null; then
+		right_arping=1
+		right_arping_command="arping-th"
+	elif hash arping 2> /dev/null; then
+		if check_right_arping; then
+			right_arping=1
+		else
+			echo
+			language_strings "${language}" 722 "yellow"
+			language_strings "${language}" 115 "read"
 		fi
 	fi
 
@@ -237,6 +265,9 @@ function https_web_server_override_et_prerequisites() {
 	language_strings "${language}" 296 "yellow"
 	language_strings "${language}" 115 "read"
 	prepare_et_interface
+
+	rm -rf "${tmpdir}${channelfile}" > /dev/null 2>&1
+	echo "${channel}" > "${tmpdir}${channelfile}"
 
 	if [ -n "${enterprise_mode}" ]; then
 		exec_enterprise_attack
