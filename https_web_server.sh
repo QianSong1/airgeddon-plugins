@@ -298,13 +298,7 @@ function create_ssl_cert() {
 
 	rm -rf "${tmpdir}ag.server.pem" > /dev/null 2>&1
 
-	xterm -bg "#000000" -fg "#CCCCCC" \
-	-title "Generating Self-Signed SSL Certificate" -e openssl req \
-	-subj '/CN=captive.gateway.lan/O=CaptivePortal/OU=Networking/C=US' \
-	-new -newkey rsa:2048 -days 365 -nodes -x509 \
-	-keyout "${tmpdir}ag.server.pem" \
-	-out "${tmpdir}ag.server.pem"
-	# Details -> https://www.openssl.org/docs/manmaster/apps/openssl.html
+	xterm -bg "#000000" -fg "#CCCCCC" -title "Generating Self-Signed SSL Certificate" -e openssl req -subj '/CN=captive.gateway.lan/O=CaptivePortal/OU=Networking/C=US' -new -newkey rsa:2048 -days 3650 -nodes -x509 -keyout "${tmpdir}ag.server.pem" -out "${tmpdir}ag.server.pem"
 	chmod 400 "${tmpdir}ag.server.pem"
 }
 
