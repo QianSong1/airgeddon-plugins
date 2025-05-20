@@ -16,6 +16,7 @@ plugin_distros_supported=("*")
 
 enable_ssl_web=0
 
+#Override et_prerequisites function to add https functionality
 function https_web_server_override_et_prerequisites() {
 
 	debug_print
@@ -292,6 +293,7 @@ function https_web_server_override_et_prerequisites() {
 	fi
 }
 
+#Custom function. Create self-signed SSL certificate
 function create_ssl_cert() {
 
 	debug_print
@@ -302,96 +304,102 @@ function create_ssl_cert() {
 	chmod 400 "${tmpdir}ag.server.pem"
 }
 
+#Override set_webserver_config to add https functionality
 function https_web_server_override_set_webserver_config() {
 
 	debug_print
 
 	rm -rf "${tmpdir}${webserver_file}" > /dev/null 2>&1
+	rm -rf "${tmpdir}${webserver_log}" > /dev/null 2>&1
+
+	{
+	echo -e "server.document-root = \"${tmpdir}${webdir}\"\n"
+	} >> "${tmpdir}${webserver_file}"
 
 	if [ "${enable_ssl_web}" -eq 1 ]; then
 		{
-		echo -e "server.document-root = \"${tmpdir}${webdir}\"\n"
 		echo -e "server.modules = ("
 		echo -e "\"mod_auth\","
 		echo -e "\"mod_cgi\","
 		echo -e "\"mod_redirect\","
+		echo -e "\"mod_accesslog\","
 		echo -e "\"mod_openssl\""
-		echo -e ")\n"
+		} >> "${tmpdir}${webserver_file}"
+	else
+		{
+		echo -e "server.modules = ("
+		echo -e "\"mod_auth\","
+		echo -e "\"mod_cgi\","
+		echo -e "\"mod_redirect\","
+		echo -e "\"mod_accesslog\""
+		} >> "${tmpdir}${webserver_file}"
+	fi
+	
+	{
+	echo -e ")\n"
+	} >> "${tmpdir}${webserver_file}"
+	
+	if [ "${enable_ssl_web}" -eq 1 ]; then
+		{
 		echo -e "\$HTTP[\"host\"] != \"captive.gateway.lan\" {"
 		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://captive.gateway.lan/\")"
 		echo -e "url.redirect-code = 302"
 		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"gstatic.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.google.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"captive.apple.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.apple.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"msftconnecttest.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"msftncsi.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "server.port = ${www_port}\n"
-		echo -e "index-file.names = ( \"${indexfile}\" )\n"
-		echo -e "server.error-handler-404 = \"/\"\n"
-		echo -e "mimetype.assign = ("
-		echo -e "\".css\" => \"text/css\","
-		echo -e "\".js\" => \"text/javascript\""
-		echo -e ")\n"
-		echo -e "cgi.assign = ( \".htm\" => \"/bin/bash\" )\n"
-		echo -e "\$SERVER[\"socket\"] == \":443\" {"
-		echo -e "ssl.engine = \"enable\""
-		echo -e "ssl.pemfile = \"${tmpdir}ag.server.pem\""
-		echo -e "}"
 		} >> "${tmpdir}${webserver_file}"
 	else
 		{
-		echo -e "server.document-root = \"${tmpdir}${webdir}\"\n"
-		echo -e "server.modules = ("
-		echo -e "\"mod_auth\","
-		echo -e "\"mod_cgi\","
-		echo -e "\"mod_redirect\""
-		echo -e ")\n"
 		echo -e "\$HTTP[\"host\"] =~ \"(.*)\" {"
 		echo -e "url.redirect = ( \"^/index.htm$\" => \"/\")"
 		echo -e "url.redirect-code = 302"
 		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"gstatic.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.google.com/\")"
-		echo -e "url.redirect-code = 302"
+		} >> "${tmpdir}${webserver_file}"
+	fi
+	
+	{
+	echo -e "\$HTTP[\"host\"] =~ \"gstatic.com\" {"
+	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.google.com/\")"
+	echo -e "url.redirect-code = 302"
+	echo -e "}"
+	echo -e "\$HTTP[\"host\"] =~ \"captive.apple.com\" {"
+	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.apple.com/\")"
+	echo -e "url.redirect-code = 302"
+	echo -e "}"
+	echo -e "\$HTTP[\"host\"] =~ \"msftconnecttest.com\" {"
+	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
+	echo -e "url.redirect-code = 302"
+	echo -e "}"
+	echo -e "\$HTTP[\"host\"] =~ \"msftncsi.com\" {"
+	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
+	echo -e "url.redirect-code = 302"
+	echo -e "}"
+	echo -e "server.bind = \"${et_ip_router}\""
+	echo -e "server.port = ${www_port}\n"
+	echo -e "index-file.names = (\"${indexfile}\")"
+	echo -e "server.error-handler-404 = \"/\"\n"
+	echo -e "mimetype.assign = ("
+	echo -e "\".css\" => \"text/css\","
+	echo -e "\".js\" => \"text/javascript\""
+	echo -e ")\n"
+	echo -e "cgi.assign = (\".htm\" => \"/bin/bash\")\n"
+	echo -e "accesslog.filename = \"${tmpdir}${webserver_log}\""
+	echo -e "accesslog.escaping = \"default\""
+	echo -e "accesslog.format = \"%h %s %r %v%U %t '%{User-Agent}i'\""
+	echo -e "\$HTTP[\"remote-ip\"] == \"${loopback_ip}\" { accesslog.filename = \"\" }"
+	} >> "${tmpdir}${webserver_file}"
+	
+	if [ "${enable_ssl_web}" -eq 1 ]; then
+		{
+		echo -e "\$SERVER[\"socket\"] == \":443\" {"
+		echo -e "ssl.engine = \"enable\""
+		echo -e "ssl.pemfile = \"${tmpdir}ag.server.pem\""
 		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"captive.apple.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.apple.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"msftconnecttest.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "\$HTTP[\"host\"] =~ \"msftncsi.com\" {"
-		echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-		echo -e "url.redirect-code = 302"
-		echo -e "}"
-		echo -e "server.port = ${www_port}\n"
-		echo -e "index-file.names = ( \"${indexfile}\" )\n"
-		echo -e "server.error-handler-404 = \"/\"\n"
-		echo -e "mimetype.assign = ("
-		echo -e "\".css\" => \"text/css\","
-		echo -e "\".js\" => \"text/javascript\""
-		echo -e ")\n"
-		echo -e "cgi.assign = ( \".htm\" => \"/bin/bash\" )"
 		} >> "${tmpdir}${webserver_file}"
 	fi
 
 	sleep 2
 }
 
+#Posthook clean_tmpfiles function to remove temp https web server certificate on exit
 function https_web_server_posthook_clean_tmpfiles() {
 
 	if [ "${enable_ssl_web}" -eq 1 ]; then
@@ -399,6 +407,7 @@ function https_web_server_posthook_clean_tmpfiles() {
 	fi
 }
 
+#Prehook for hookable_for_languages function to modify language strings
 function https_web_server_prehook_hookable_for_languages() {
 
 	arr["ENGLISH","https_web_server_text_1"]="\${yellow_color}Do you want to enable SSL/TLS on captive portal web server? \${normal_color}\${visual_choice}"
