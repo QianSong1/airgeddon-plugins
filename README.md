@@ -20,6 +20,8 @@ airgeddon-plugins
 
 `advance_pid_killing.sh`: Optimize the killing of processes. By default, this plugin is not enabled, **and it doesn't matter if it's not enabled**
 
+**Note:** These plugins have only been fully tested on **airgeddon v11.21**. If you're using a newer version, please fetch the corresponding **feature-xxx** branch (e.g., **feature-11.50**).
+
 
 
 ## How to use
