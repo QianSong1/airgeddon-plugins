@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="10.0"
-plugin_maximum_ag_affected_version=""
+plugin_minimum_ag_affected_version="11.50"
+plugin_maximum_ag_affected_version="11.50"
 
 plugin_distros_supported=("*")
 
@@ -40,7 +40,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 	language_strings "${language}" 396
 	language_strings "${language}" 262 "separator"
 	language_strings "${language}" 263 et_captive_portal_dependencies[@]
-	print_hint ${current_menu}
+	print_hint
 
 	read -rp "> " et_option
 	case ${et_option} in
@@ -65,7 +65,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 			else
 				current_iface_on_messages="${interface}"
 				if check_interface_wifi "${interface}"; then
-					if [ "${card_vif_support}" -eq 0 ]; then
+					if [ "${adapter_vif_support}" -eq 0 ]; then
 						ask_yesno 696 "no"
 						if [ "${yesno}" = "y" ]; then
 							et_attack_adapter_prerequisites_ok=1
@@ -80,7 +80,6 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						ports_needed["tcp"]=""
 						ports_needed["udp"]="${dhcp_port}"
 						if check_busy_ports; then
-
 							et_mode="et_onlyap"
 							et_dos_menu
 						fi
@@ -98,7 +97,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 			else
 				current_iface_on_messages="${interface}"
 				if check_interface_wifi "${interface}"; then
-					if [ "${card_vif_support}" -eq 0 ]; then
+					if [ "${adapter_vif_support}" -eq 0 ]; then
 						ask_yesno 696 "no"
 						if [ "${yesno}" = "y" ]; then
 							et_attack_adapter_prerequisites_ok=1
@@ -113,7 +112,6 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						ports_needed["tcp"]=""
 						ports_needed["udp"]="${dhcp_port}"
 						if check_busy_ports; then
-
 							et_mode="et_sniffing"
 							et_dos_menu
 						fi
@@ -137,7 +135,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						language_strings "${language}" 174 "red"
 						language_strings "${language}" 115 "read"
 					else
-						if [ "${card_vif_support}" -eq 0 ]; then
+						if [ "${adapter_vif_support}" -eq 0 ]; then
 							ask_yesno 696 "no"
 							if [ "${yesno}" = "y" ]; then
 								et_attack_adapter_prerequisites_ok=1
@@ -152,7 +150,6 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 							ports_needed["tcp"]="${bettercap_proxy_port}"
 							ports_needed["udp"]="${dhcp_port} ${bettercap_dns_port}"
 							if check_busy_ports; then
-
 								et_mode="et_sniffing_sslstrip2"
 								et_dos_menu
 							fi
@@ -174,7 +171,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 			else
 				current_iface_on_messages="${interface}"
 				if check_interface_wifi "${interface}"; then
-					if [ "${card_vif_support}" -eq 0 ]; then
+					if [ "${adapter_vif_support}" -eq 0 ]; then
 						ask_yesno 696 "yes"
 						if [ "${yesno}" = "y" ]; then
 							et_attack_adapter_prerequisites_ok=1
@@ -189,7 +186,6 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						ports_needed["tcp"]="${dns_port} ${www_port}"
 						ports_needed["udp"]="${dns_port} ${dhcp_port}"
 						if check_busy_ports; then
-
 							et_mode="et_captive_portal"
 							echo
 							language_strings "${language}" 316 "yellow"

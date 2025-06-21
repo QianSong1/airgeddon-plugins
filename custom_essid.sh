@@ -20,14 +20,14 @@ function custom_essid_prehook_set_hostapd_config() {
 	debug_print
 
 	if [[ "${essid}" == "(Hidden Network)" ]] || [[ "${plugin_name}" != "" ]]; then
+		echo
 		language_strings "${language}" "custom_essid_text_2" "yellow"
 		echo -e "------"
 		echo -e "\033[1;32m1.)\033[0m yes"
 		echo -e "\033[1;31m2.)\033[0m no"
 		echo -e "------"
 		read -rp "> " you_zl
-		while true
-		do
+		while true; do
 			if [[ "${you_zl}" != "1" ]] && [[ "${you_zl}" != "2" ]]; then
 				echo -e "\033[31mInvalid input.\033[0m"
 				read -rp "> " you_zl
@@ -36,39 +36,39 @@ function custom_essid_prehook_set_hostapd_config() {
 			fi
 		done
 		case ${you_zl} in
-			1)
-				local regexp1="^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$|^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z\_\-])*([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$"
-				language_strings "${language}" "custom_essid_text_1" "yellow"
+		1)
+			local regexp1="^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$|^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z\_\-])*([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$"
+			echo
+			language_strings "${language}" "custom_essid_text_1" "yellow"
+			read -rp "> " essid
+			while [[ ! "${essid}" =~ ${regexp1} ]]; do
+				echo -e "\033[31mInvalid ESSID.\033[0m"
 				read -rp "> " essid
-				while [[ ! "${essid}" =~ ${regexp1} ]]
-				do
-					echo -e "\033[31mInvalid ESSID.\033[0m"
-					read -rp "> " essid
-				done
-				language_strings "${language}" "custom_essid_text_3"
+			done
+			echo
+			language_strings "${language}" "custom_essid_text_3"
+			read -rp "> " channel
+			while ! channel_check "${channel}"; do
+				echo -e "\033[31mInvalid channel number.\033[0m"
 				read -rp "> " channel
-				while ! channel_check "${channel}"
-				do
-					echo -e "\033[31mInvalid channel number.\033[0m"
-					read -rp "> " channel
-				done
-				;;
-			2)
-				true
-				;;
-			*)
-				echo -e "\033[31mSome error...\033[0m"
-				exit
-				;;
+			done
+			;;
+		2)
+			true
+			;;
+		*)
+			echo -e "\033[31mSome error...\033[0m"
+			exit
+			;;
 		esac
 	fi
 
 	if [[ "${essid}" == "(Hidden Network)" ]] && [[ "${you_zl}" == "2" ]]; then
 		local regexp1="^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$|^([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z\_\-])*([^x00-xff\!\@\#\$\%\^\&\*\:\;\,\.\_\+\~\=\ A-Z\-]|[0-9a-zA-Z])$"
+		echo
 		language_strings "${language}" "custom_essid_text_4" "yellow"
 		read -rp "> " essid
-		while [[ ! "${essid}" =~ ${regexp1} ]]
-		do
+		while [[ ! "${essid}" =~ ${regexp1} ]]; do
 			echo -e "\033[31mInvalid ESSID.\033[0m"
 			read -rp "> " essid
 		done
@@ -78,8 +78,7 @@ function custom_essid_prehook_set_hostapd_config() {
 function channel_check() {
 	local channel_list=(1 2 3 4 5 6 7 8 9 10 11 12 13 36 40 44 48 52 56 60 64 149 153 157 161 165)
 	local check_channel="${1}"
-	for iterm in "${channel_list[@]}"
-	do
+	for iterm in "${channel_list[@]}"; do
 		if [[ "${iterm}" != "${check_channel}" ]]; then
 			continue
 		else
@@ -151,4 +150,3 @@ function initialize_custom_essid_language_strings() {
 }
 
 initialize_custom_essid_language_strings
-
