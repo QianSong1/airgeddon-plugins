@@ -411,7 +411,7 @@ function multint_override_select_secondary_interface() {
 	fi
 }
 
-function initialize_multint_language_strings() {
+function multint_prehook_hookable_for_languages() {
 
 	debug_print
 
@@ -444,4 +444,3 @@ function initialize_multint_language_strings() {
 	arr["CHINESE","multint_text_2"]="请选择一个接口用于 Deauth (Monitor Mode):"
 }
 
-initialize_multint_language_strings

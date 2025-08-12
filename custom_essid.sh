@@ -88,7 +88,7 @@ function channel_check() {
 	return 1
 }
 
-function initialize_custom_essid_language_strings() {
+function custom_essid_prehook_hookable_for_languages() {
 
 	debug_print
 
@@ -149,4 +149,3 @@ function initialize_custom_essid_language_strings() {
 	arr["CHINESE","custom_essid_text_4"]="检测到你选择了一个隐藏网络，你必须指定该隐藏网络的名称才能继续，请输入隐藏网络名称"
 }
 
-initialize_custom_essid_language_strings

@@ -444,7 +444,7 @@ function custom_portals_prehook_set_captive_portal_language() {
 }
 
 #Custom function. Create text messages to be used in custom portals plugin
-function initialize_custom_portals_language_strings() {
+function custom_portals_prehook_hookable_for_languages() {
 
 	debug_print
 
@@ -632,4 +632,3 @@ function initialize_custom_portals_language_strings() {
 	arr["CHINESE","custom_portals_text_12"]="无效的选择!"
 }
 
-initialize_custom_portals_language_strings
