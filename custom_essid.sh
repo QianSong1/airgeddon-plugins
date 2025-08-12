@@ -10,8 +10,8 @@ plugin_author="xpz3"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="10.0"
-plugin_maximum_ag_affected_version=""
+plugin_minimum_ag_affected_version="11.51"
+plugin_maximum_ag_affected_version="11.51"
 
 plugin_distros_supported=("*")
 

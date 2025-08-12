@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="11.50"
-plugin_maximum_ag_affected_version=""
+plugin_minimum_ag_affected_version="11.51"
+plugin_maximum_ag_affected_version="11.51"
 plugin_distros_supported=("*")
 
 enable_ssl_web=0
@@ -201,7 +201,7 @@ function https_web_server_override_et_prerequisites() {
 			if [ "${yesno}" = "y" ]; then
 				advanced_captive_portal=1
 			fi
-			
+
 			ask_yesno "https_web_server_text_1" "no"
 			if [ "${yesno}" = "y" ]; then
 				enable_ssl_web=1
@@ -334,11 +334,11 @@ function https_web_server_override_set_webserver_config() {
 		echo -e "\"mod_accesslog\""
 		} >> "${tmpdir}${webserver_file}"
 	fi
-	
+
 	{
 	echo -e ")\n"
 	} >> "${tmpdir}${webserver_file}"
-	
+
 	if [ "${enable_ssl_web}" -eq 1 ]; then
 		{
 		echo -e "\$HTTP[\"host\"] != \"captive.gateway.lan\" {"
@@ -354,24 +354,8 @@ function https_web_server_override_set_webserver_config() {
 		echo -e "}"
 		} >> "${tmpdir}${webserver_file}"
 	fi
-	
+
 	{
-	echo -e "\$HTTP[\"host\"] =~ \"gstatic.com\" {"
-	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.google.com/\")"
-	echo -e "url.redirect-code = 302"
-	echo -e "}"
-	echo -e "\$HTTP[\"host\"] =~ \"captive.apple.com\" {"
-	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.apple.com/\")"
-	echo -e "url.redirect-code = 302"
-	echo -e "}"
-	echo -e "\$HTTP[\"host\"] =~ \"msftconnecttest.com\" {"
-	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-	echo -e "url.redirect-code = 302"
-	echo -e "}"
-	echo -e "\$HTTP[\"host\"] =~ \"msftncsi.com\" {"
-	echo -e "url.redirect = ( \"^/(.*)$\" => \"http://connectivitycheck.microsoft.com/\")"
-	echo -e "url.redirect-code = 302"
-	echo -e "}"
 	echo -e "server.bind = \"${et_ip_router}\""
 	echo -e "server.port = ${www_port}\n"
 	echo -e "index-file.names = (\"${indexfile}\")"
@@ -386,7 +370,7 @@ function https_web_server_override_set_webserver_config() {
 	echo -e "accesslog.format = \"%h %s %r %v%U %t '%{User-Agent}i'\""
 	echo -e "\$HTTP[\"remote-ip\"] == \"${loopback_ip}\" { accesslog.filename = \"\" }"
 	} >> "${tmpdir}${webserver_file}"
-	
+
 	if [ "${enable_ssl_web}" -eq 1 ]; then
 		{
 		echo -e "\$SERVER[\"socket\"] == \":443\" {"
