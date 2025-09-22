@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="11.51"
-plugin_maximum_ag_affected_version="11.51"
+plugin_minimum_ag_affected_version="11.52"
+plugin_maximum_ag_affected_version="11.52"
 
 plugin_distros_supported=("*")
 
