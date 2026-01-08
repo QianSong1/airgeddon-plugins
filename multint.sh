@@ -15,8 +15,8 @@ plugin_enabled=1
 ###### PLUGIN REQUIREMENTS ######
 
 #Set airgeddon versions to apply this plugin (leave blank to set no limits, minimum version recommended is 10.0 on which plugins feature was added)
-plugin_minimum_ag_affected_version="11.52"
-plugin_maximum_ag_affected_version="11.52"
+plugin_minimum_ag_affected_version="11.60"
+plugin_maximum_ag_affected_version="11.60"
 
 #Set only one element in the array "*" to affect all distros, otherwise add them one by one with the name which airgeddon uses for that distro (examples "BlackArch", "Parrot", "Kali")
 plugin_distros_supported=("*")
@@ -102,7 +102,7 @@ function multint_override_select_interface() {
 						phy_interface=$(physical_interface_finder "${interface}")
 						check_interface_supported_bands "${phy_interface}" "main_wifi_interface"
 						interface_mac=$(ip link show "${interface}" | awk '/ether/ {print $2}')
-						card_vif_support=1 #Suppress VIF not supported message as we are using two separate cards
+						adapter_vif_support=1 #Suppress VIF not supported message as we are using two separate cards
 						check_interface_wifi_longname "${interface}"
 						break
 					fi

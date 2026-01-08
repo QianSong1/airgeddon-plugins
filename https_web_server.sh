@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="11.52"
-plugin_maximum_ag_affected_version="11.52"
+plugin_minimum_ag_affected_version="11.60"
+plugin_maximum_ag_affected_version="11.60"
 plugin_distros_supported=("*")
 
 enable_ssl_web=0
@@ -362,9 +362,20 @@ function https_web_server_override_set_webserver_config() {
 	echo -e "server.error-handler-404 = \"/\"\n"
 	echo -e "mimetype.assign = ("
 	echo -e "\".css\" => \"text/css\","
+	echo -e "\".htm\" => \"text/html\","
+	echo -e "\".html\" => \"text/html\","
 	echo -e "\".js\" => \"text/javascript\""
 	echo -e ")\n"
-	echo -e "cgi.assign = (\".htm\" => \"/bin/bash\")\n"
+	echo -e "cgi.assign = ("
+	echo -e "\".htm\" => \"/bin/bash\""
+	} >> "${tmpdir}${webserver_file}"
+
+	if [ "${customportals_php_as_cgi}" -eq 1 ]; then
+		echo -e ",\".php\" => \"/bin/bash\"" >> "${tmpdir}${webserver_file}"
+	fi
+
+	{
+	echo -e ")\n"
 	echo -e "accesslog.filename = \"${tmpdir}${webserver_log}\""
 	echo -e "accesslog.escaping = \"default\""
 	echo -e "accesslog.format = \"%h %s %r %v%U %t '%{User-Agent}i'\""
