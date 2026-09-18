@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="11.61"
-plugin_maximum_ag_affected_version="11.61"
+plugin_minimum_ag_affected_version="12.0"
+plugin_maximum_ag_affected_version="12.0"
 
 plugin_distros_supported=("*")
 
@@ -81,7 +81,20 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						ports_needed["udp"]="${dhcp_port}"
 						if check_busy_ports; then
 							et_mode="et_onlyap"
-							et_dos_menu
+							local et_target_ready=1
+							if [[ -z ${bssid} ]] || [[ -z ${essid} ]] || [[ -z ${channel} ]] || [[ "${essid}" = "(Hidden Network)" ]]; then
+								echo
+								language_strings "${language}" 125 "yellow"
+								language_strings "${language}" 115 "read"
+								if ! explore_for_targets_option; then
+									et_target_ready=0
+								fi
+							fi
+							if [ "${et_target_ready}" -eq 1 ]; then
+								if check_6ghz_thirdparty_tools_compatibility; then
+									et_dos_menu
+								fi
+							fi
 						fi
 					fi
 				else
@@ -113,7 +126,20 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 						ports_needed["udp"]="${dhcp_port}"
 						if check_busy_ports; then
 							et_mode="et_sniffing"
-							et_dos_menu
+							local et_target_ready=1
+							if [[ -z ${bssid} ]] || [[ -z ${essid} ]] || [[ -z ${channel} ]] || [[ "${essid}" = "(Hidden Network)" ]]; then
+								echo
+								language_strings "${language}" 125 "yellow"
+								language_strings "${language}" 115 "read"
+								if ! explore_for_targets_option; then
+									et_target_ready=0
+								fi
+							fi
+							if [ "${et_target_ready}" -eq 1 ]; then
+								if check_6ghz_thirdparty_tools_compatibility; then
+									et_dos_menu
+								fi
+							fi
 						fi
 					fi
 				else
@@ -151,7 +177,20 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 							ports_needed["udp"]="${dhcp_port} ${bettercap_dns_port}"
 							if check_busy_ports; then
 								et_mode="et_sniffing_sslstrip2"
-								et_dos_menu
+								local et_target_ready=1
+								if [[ -z ${bssid} ]] || [[ -z ${essid} ]] || [[ -z ${channel} ]] || [[ "${essid}" = "(Hidden Network)" ]]; then
+									echo
+									language_strings "${language}" 125 "yellow"
+									language_strings "${language}" 115 "read"
+									if ! explore_for_targets_option; then
+										et_target_ready=0
+									fi
+								fi
+								if [ "${et_target_ready}" -eq 1 ]; then
+									if check_6ghz_thirdparty_tools_compatibility; then
+										et_dos_menu
+									fi
+								fi
 							fi
 						fi
 					fi
@@ -192,7 +231,9 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 							language_strings "${language}" 115 "read"
 
 							if explore_for_targets_option "WPA"; then
-								et_dos_menu
+								if check_6ghz_thirdparty_tools_compatibility; then
+									et_dos_menu
+								fi
 							fi
 						fi
 					fi

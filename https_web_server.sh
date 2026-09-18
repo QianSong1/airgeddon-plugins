@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="11.61"
-plugin_maximum_ag_affected_version="11.61"
+plugin_minimum_ag_affected_version="12.0"
+plugin_maximum_ag_affected_version="12.0"
 plugin_distros_supported=("*")
 
 enable_ssl_web=0
@@ -139,6 +139,9 @@ function https_web_server_override_et_prerequisites() {
 		language_strings "${language}" 26 "blue"
 
 		echo
+		language_strings "${language}" 834 "blue"
+
+		echo
 		language_strings "${language}" 31 "blue"
 	else
 		if ! ask_bssid; then
@@ -158,8 +161,15 @@ function https_web_server_override_et_prerequisites() {
 				return_to_et_main_menu=1
 			fi
 			return
+		elif ! check_target_band_supported_by_interface "main_wifi_interface"; then
+			if [ -n "${enterprise_mode}" ]; then
+				return_to_enterprise_main_menu=1
+			else
+				return_to_et_main_menu=1
+			fi
+			return
 		else
-			if [[ "${dos_pursuit_mode}" -eq 1 ]] && [[ -n "${channel}" ]] && [[ "${channel}" -gt 14 ]] && [[ "${interfaces_band_info['secondary_wifi_interface','5Ghz_allowed']}" -eq 0 ]]; then
+			if [[ "${dos_pursuit_mode}" -eq 1 && ( ("${target_band_id}" = "${band_6ghz}" && "${interfaces_band_info['secondary_wifi_interface','6Ghz_allowed']}" -eq 0) || ("${target_band_id}" = "${band_5ghz}" && "${interfaces_band_info['secondary_wifi_interface','5Ghz_allowed']}" -eq 0) ) ]]; then
 				echo
 				language_strings "${language}" 394 "red"
 				language_strings "${language}" 115 "read"
