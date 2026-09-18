@@ -18,8 +18,8 @@ plugin_author="KeyofBlueS"
 
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="12.0"
-plugin_maximum_ag_affected_version="12.0"
+plugin_minimum_ag_affected_version="12.01"
+plugin_maximum_ag_affected_version="12.01"
 plugin_distros_supported=("*")
 
 ################################# USER CONFIG SECTION #################################
