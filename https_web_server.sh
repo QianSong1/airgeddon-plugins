@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="12.01"
-plugin_maximum_ag_affected_version="12.01"
+plugin_minimum_ag_affected_version="12.02"
+plugin_maximum_ag_affected_version="12.02"
 plugin_distros_supported=("*")
 
 enable_ssl_web=0
@@ -55,6 +55,15 @@ function https_web_server_override_et_prerequisites() {
 				language_strings "${language}" 293 "title"
 			;;
 		esac
+	fi
+
+	if [[ -z "${enterprise_mode}" ]] && ! check_iptables_nftables_nat_support; then
+		echo
+		language_strings "${language}" 848 "red"
+		language_strings "${language}" 115 "read"
+		return_to_et_main_menu=1
+		return_to_et_main_menu_from_beef=1
+		return
 	fi
 
 	print_iface_selected

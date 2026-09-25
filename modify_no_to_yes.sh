@@ -10,8 +10,8 @@ plugin_author="QianSong1"
 #Enabled 1 / Disabled 0 - Set this plugin as enabled - Default value 1
 plugin_enabled=1
 
-plugin_minimum_ag_affected_version="12.01"
-plugin_maximum_ag_affected_version="12.01"
+plugin_minimum_ag_affected_version="12.02"
+plugin_maximum_ag_affected_version="12.02"
 
 plugin_distros_supported=("*")
 
@@ -20,6 +20,7 @@ function modify_no_to_yes_override_evil_twin_attacks_menu() {
 
 	debug_print
 
+	restore_terminal_output
 	clear
 	language_strings "${language}" 253 "title"
 	current_menu="evil_twin_attacks_menu"
